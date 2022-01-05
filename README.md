@@ -9,3 +9,15 @@
 3.容易被反爬，网页元素一旦发生变化就会产生大量问题，比如大量定位元素需要修改!
 
 更改日期：1/3/2022
+
+Project Title: Webpage Automation Realizes Online Stock Screening
+Project background: In mid-July 2021, a former Shanghai trader during the internship requested a program to help automatically screen stocks to improve work efficiency
+
+Project function: The focus is on the python automation framework selenium, which automates web page operations and collection by locating web page elements. The program function is to automatically enter the Shanghai, Shenzhen and Beijing A shares of the Oriental Fortune website and collect various stock data that meet the requirements
+
+Project review and thinking: The operation logic of the program itself is very simple, using python's selenium library to locate webpage elements to imitate human webpage operations, but the difficulty is how to collect data effectively.
+1. Some Yingcang elements in the webpage need to be displayed through specific mouse operations. Therefore, you need to keep moving the mouse to collect enough information instead of acquiring all at once. Collecting data by mouse movement is slow and inefficient!
+2. When the mouse moves to trigger the Yingcang element, the mouse needs to be given a specific pixel position. However, the pixels of each computer are different, so if you operate on a different computer, you need to manually change the pixel position.
+3. It is easy to be crawled back. Once the web page elements are changed, a lot of problems will arise, such as a large number of positioning elements that need to be modified!
+
+Date of change: 1/3/2022
