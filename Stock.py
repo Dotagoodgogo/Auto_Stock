@@ -1,11 +1,8 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 import time
 import pyautogui
 from selenium.webdriver import ActionChains
 from datetime import datetime
-from selenium.webdriver.common.by import By
-
 
 
 class stock:
@@ -16,7 +13,7 @@ class stock:
         self.CheckDouble = []
         self.SavedCode = []
         with open('stock.txt', 'r+', encoding="utf-8") as f:  # 记录操作日期
-            #f.truncate(0)#清空所有数据
+            # f.truncate(0)#清空所有数据
             for line in f.readlines():
                 self.SavedCode.append(line[0:6])
 
@@ -28,9 +25,7 @@ class stock:
 
         options = webdriver.ChromeOptions()
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
-        s = Service(r"C:\Program Files (x86)\chromedriver.exe")
-        self.driver = webdriver.Chrome(service=s)
-
+        self.driver = webdriver.Chrome(executable_path='C:\Program Files (x86)\chromedriver.exe', options=options)
         self.driver.implicitly_wait(20)
         self.driver.maximize_window()
         # self.driver.get("https://quote.eastmoney.com/center/gridlist.html#kcb_board")
@@ -38,29 +33,21 @@ class stock:
 
     def processing(self):
         self.Stock_id = []
-        maxpage = self.driver.find_element(By.CSS_SELECTOR,
+        maxpage = self.driver.find_element_by_css_selector(
             ".dataTables_wrapper div>.paginate_page>a:nth-last-child(1)").text
-        correct = ["6","0","3"]
+        correct = ["6", "0", "3"]
         # 找出最大页数
         while True:
             i = 0
             while i < 20:
                 try:
-                    self.Stock_code = self.driver.find_elements(By.XPATH,
+                    self.Stock_code = self.driver.find_elements_by_xpath(
                         "//*[@id='table_wrapper-table']/tbody/tr/td[2]/a")[i]
                     if self.Stock_code.text[0] not in correct:
-                        i=i+1
+                        i = i + 1
                         continue
-
                     self.Stock_id.append(self.Stock_code.text)
-                except:
-                    continue
-                # new
-                try:
-                    if self.Stock_id[-1] in self.SavedCode:
-                        pass
-                    else:
-                        self.clickcode(self.Stock_code)
+                    self.clickcode(self.Stock_code)
                 except:
                     continue
 
@@ -73,17 +60,17 @@ class stock:
             for i in self.Stock_code:
                 self.Stock_id.append(i.text)
                 self.clickcode(i)
-                
+
             '''
 
-            checkpage = self.driver.find_element(By.CSS_SELECTOR,
+            checkpage = self.driver.find_element_by_css_selector(
                 "#main-table_paginate > span.paginate_page > a.paginate_button.current").text
             if int(checkpage) == int(maxpage):
                 self.driver.quit()
                 break
             while True:
                 try:
-                    ChangePage = self.driver.find_element(By.CSS_SELECTOR,
+                    ChangePage = self.driver.find_element_by_css_selector(
                         "#main-table_paginate > a.next.paginate_button")
                     ChangePage.click()
                     break
@@ -98,22 +85,22 @@ class stock:
         self.driver.switch_to.window(new_window)
         while True:
             try:
-                weekk = self.driver.find_element(By.CSS_SELECTOR,"#changektab > span:nth-child(2)")
+                weekk = self.driver.find_element_by_xpath("//*[@id='changektab']/span[2]")
                 weekk.click()  # 点击周K按钮
                 break
             except:
                 continue
 
-        map = self.driver.find_element(By.CSS_SELECTOR,"#emchartk > div.__ui")
+        map = self.driver.find_element_by_css_selector("#emchartk > div.__ui")
         ActionChains(self.driver).move_to_element(map).perform()  # 向下滑动到周线模块
 
-        Button = self.driver.find_element(By.CSS_SELECTOR,'#beforeBackRight > i')#复权选项
+        Button = self.driver.find_element_by_css_selector('#beforeBackRight > i')
         action = ActionChains(self.driver)
         action.move_to_element(Button).perform()
 
-        Button1 = self.driver.find_element(By.XPATH,"//*[@id='beforeBackRight']/dl/dd[2]")#点击前复权
+        Button1 = self.driver.find_element_by_css_selector("#beforeBackRight > dl > dd:nth-child(2)")
         Button1.click()
-        pyautogui.moveTo(2000, 1030)
+        pyautogui.moveTo(1300, 560)
 
         time.sleep(1)
         self.mousemoevment()
@@ -129,10 +116,11 @@ class stock:
         # 在周K图寻找规律
         # pyautogui.moveTo(885,1030)
         # pyautogui.moveTo(1800,1030,2)
+        #for i in range(1015, 565, -3):
 
-        for i in range(1525, 776, -3):  #鼠标移动
-            pyautogui.moveTo(i, 1030)
-            inf = self.driver.find_elements(By.CSS_SELECTOR,
+        for i in range(1015, 565, -3):  # 鼠标移动(坐标，坐标，移动速度)
+            pyautogui.moveTo(i, 505)
+            inf = self.driver.find_elements_by_css_selector(
                 "#emchartk > div.__ui > div.__popfloatwin > h4 > span,#emchartk > div.__ui > div.__popfloatwin > div:nth-child(3) > span,#emchartk > div.__ui > div.__popfloatwin > div:nth-child(4) > span,#emchartk > div.__ui > div.__popfloatwin > div:nth-child(5) > span")
             if inf == []:
                 return
@@ -183,13 +171,13 @@ class stock:
                     continue
 
     def calculating2(self):
-        if self.Stock_id[-1] in self.CheckDouble:
+        if self.Stock_id[-1] in self.CheckDouble:##<--查看是否重复计算
             return
         x = self.biglist.index(self.FinalResult1[-1])  # 寻找起始点在是个数据里面的坐标
         for i in range(x + 1, len(self.biglist)):
             if float(self.biglist[i][1]) >= float(self.biglist[i - 1][1]) > 0:
                 continue
-            elif 0 < float(self.biglist[i][1]) < float(self.biglist[i - 1][1]) and i == 9 :  # 判断条件2
+            elif 0 < float(self.biglist[i][1]) < float(self.biglist[i - 1][1]) and i == 9:  # 判断条件2
                 if 0 < (float(self.biglist[i - 1][1]) - float(self.biglist[i - 2][1])) < (
                         float(self.biglist[i - 2][1]) - float(self.biglist[i - 3][1])):
 
@@ -199,22 +187,23 @@ class stock:
                             continue
                         else:
                             return
-
+                    # 判断强弱趋势  0<NC<PL<OC
                     if 0 < float(self.biglist[i - 2][1]) < float(self.biglist[i][3]) < float(
-                            self.biglist[i - 1][1]):  # 判断强弱趋势  0<NC<PL<OC
+                            self.biglist[i - 1][1]) and self.biglist[-1][1]<self.biglist[-2][1] and\
+                            float(self.biglist[-2][1])-float(self.biglist[-1][2])>float(self.biglist[-1][2])-float(self.biglist[-1][3]):  #A-B>2(B-C)
                         # 判断最大回调深度
                         depth = float(self.biglist[-1][1]) - float(self.biglist[-2][1]) + float(self.biglist[-1][3])
-                        print(depth)
                         with open('stock.txt', 'a', encoding="utf-8") as f:
-                            #f.write(self.Stock_id[-1] + " 趋势起点:" + str(self.FinalResult1[-1]) + " 转折点:" + str(
-                                #self.biglist[i - 1]) + 'A' + "转折点后第一根周线最低价:" + self.biglist[i][3])
-                            f.write(self.Stock_id[-1] + " 趋势起点:" + str(self.FinalResult1[-1]) + " 转折点最高价:" + str(
-                                self.biglist[i - 1][2]) + 'A' + "第十周最低价:" + self.biglist[i][3]+ "回调深度: " + str(depth))
+                            # f.write(self.Stock_id[-1] + " 趋势起点:" + str(self.FinalResult1[-1]) + " 转折点:" + str(
+                            # self.biglist[i - 1]) + 'A ' + "转折点后第一根周线最低价:" + self.biglist[i][3])
+                            f.write(self.Stock_id[-1] + " 趋势起点:" + str(self.FinalResult1[-1]) + " 第九周第十周最高价:" + str(max( self.biglist[-1][2], self.biglist[-2][2])
+                                ) + ' A ' + "第十周最低价:" + self.biglist[i][3] + "回调深度: " + str(depth)+"开仓价:"+str(depth*1.02))
                             self.CheckDouble.append(self.Stock_id[-1])
                             f.write('\n')
 
                         return
-
+                    """
+                    #强回调
                     elif float(self.biglist[x][1]) < float(self.biglist[i][3]) < float(self.biglist[i - 2][1]) < float(
                             self.biglist[i - 1][1]):  # BC<PL<NC<OC
                         # new
@@ -235,53 +224,22 @@ class stock:
                                 '''
                                 f.write(self.Stock_id[-1] + " 趋势起点:" + str(self.FinalResult1[-1]) + " 转折点:" + str(
                                     self.biglist[i - 1]) + 'B')
-                                '''
+                                    '''
                                 self.CheckDouble.append(self.Stock_id[-1])
                                 f.write('\n')
 
                             return
+                    """
 
     def changepage(self, page):  # 调节起始页
-        Entry = self.driver.find_element(By.CSS_SELECTOR,"#main-table_paginate > input")
+        Entry = self.driver.find_element_by_css_selector("#main-table_paginate > input")
         Entry.clear()
         Entry.send_keys(page)
 
-        Go = self.driver.find_element(By.CSS_SELECTOR,"#main-table_paginate > a.paginte_go")
+        Go = self.driver.find_element_by_css_selector("#main-table_paginate > a.paginte_go")
         Go.click()
         time.sleep(1)
-        pyautogui.scroll(700)
-
-    def specific(self,code):
-
-            Entry = self.driver.find_element(By.XPATH,"//*[@id='search_box']")
-            Entry.clear()
-            Entry.send_keys(code)
-            Inf = self.driver.find_element(By.XPATH,
-                    "//*[@id='suggest_wrapper']/div[2]/div/div[1]/div/div[2]/table/tbody/tr[1]/td[2]/span")
-            Inf.click()
-            new_window = self.driver.window_handles[1]  # 转换到跳转新网页元素
-            self.driver.switch_to.window(new_window)
-
-
-            map = self.driver.find_element(By.CSS_SELECTOR,"#emchartk > div.__ui")
-            ActionChains(self.driver).move_to_element(map).perform()  # 向下滑动到周线模块
-
-            Button = self.driver.find_element(By.CSS_SELECTOR,'#beforeBackRight > i')
-            action = ActionChains(self.driver)
-            action.move_to_element(Button).perform()
-
-            Button1 = self.driver.find_element(By.CSS_SELECTOR,"#beforeBackRight > dl > dd:nth-child(2)")
-            Button1.click()
-            pyautogui.moveTo(2400, 1030)
-
-            time.sleep(1)
-            self.mousemoevment()
-
-            self.driver.close()
-            new_window = self.driver.window_handles[0]  # 跳转回主页网页元素
-            self.driver.switch_to.window(new_window)
-            time.sleep(1)
-
+        pyautogui.scroll(400)
 
 
 '''
@@ -312,5 +270,7 @@ class stock:
                '''
 
 p = stock()
-p.changepage(237)
 p.processing()
+
+
+
