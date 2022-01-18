@@ -139,6 +139,7 @@ class stock:
         self.biglist = []
 
     def collecting(self, inf):
+        print("check collecting")
         if len(self.biglist) == 0 or inf[0].text != self.biglist[-1][0]:
             for i in inf:
                 if i.text == '':
@@ -153,6 +154,7 @@ class stock:
         # [0:日期，1:收盘，2:最高，3：最低]
 
     def calculating1(self):
+        print("check calculation")
         self.biglist.reverse()
         for i in range(len(self.biglist)):
             if i + 4 > len(self.biglist):
@@ -171,6 +173,7 @@ class stock:
                     continue
 
     def calculating2(self):
+        print("check calculation2")
         if self.Stock_id[-1] in self.CheckDouble:##<--查看是否重复计算
             return
         x = self.biglist.index(self.FinalResult1[-1])  # 寻找起始点在是个数据里面的坐标
@@ -189,19 +192,20 @@ class stock:
                             return
                     # 判断强弱趋势  0<NC<PL<OC
                     if 0 < float(self.biglist[i - 2][1]) < float(self.biglist[i][3]) < float(
-                            self.biglist[i - 1][1]) and self.biglist[-1][1]<self.biglist[-2][1] and\
-                            float(self.biglist[-2][1])-float(self.biglist[-1][2])>float(self.biglist[-1][2])-float(self.biglist[-1][3]):  #A-B>2(B-C)
-                        # 判断最大回调深度
-                        depth = float(self.biglist[-1][1]) - float(self.biglist[-2][1]) + float(self.biglist[-1][3])
-                        with open('stock.txt', 'a', encoding="utf-8") as f:
-                            # f.write(self.Stock_id[-1] + " 趋势起点:" + str(self.FinalResult1[-1]) + " 转折点:" + str(
-                            # self.biglist[i - 1]) + 'A ' + "转折点后第一根周线最低价:" + self.biglist[i][3])
-                            f.write(self.Stock_id[-1] + " 趋势起点:" + str(self.FinalResult1[-1]) + " 第九周第十周最高价:" + str(max( self.biglist[-1][2], self.biglist[-2][2])
-                                ) + ' A ' + "第十周最低价:" + self.biglist[i][3] + "回调深度: " + str(depth)+"开仓价:"+str(depth*1.02))
-                            self.CheckDouble.append(self.Stock_id[-1])
-                            f.write('\n')
+                            self.biglist[i - 1][1]):
+                        if self.biglist[-1][1]<self.biglist[-2][1] and (float(self.biglist[-2][1])-float(self.biglist[-1][1]))>2*(float(self.biglist[-1][1])-float(self.biglist[-1][3])):  #A-B>2(B-C)
+                            #第九周收盘价-第十周收盘价>2*(第十周收盘价-第十周最低价)
+                            # 判断最大回调深度
+                            depth = float(self.biglist[-1][1]) - float(self.biglist[-2][1]) + float(self.biglist[-1][3])
+                            with open('stock.txt', 'a', encoding="utf-8") as f:
+                                # f.write(self.Stock_id[-1] + " 趋势起点:" + str(self.FinalResult1[-1]) + " 转折点:" + str(
+                                # self.biglist[i - 1]) + 'A ' + "转折点后第一根周线最低价:" + self.biglist[i][3])
+                                f.write(self.Stock_id[-1] + " 趋势起点:" + str(self.FinalResult1[-1]) + " 第九周第十周最高价:" + str(max( self.biglist[-1][2], self.biglist[-2][2])
+                                    ) + ' A ' + "第十周最低价:" + self.biglist[i][3] + "回调深度: " + str(depth)+"开仓价:"+str(depth*1.02))
+                                self.CheckDouble.append(self.Stock_id[-1])
+                                f.write('\n')
 
-                        return
+                            return
                     """
                     #强回调
                     elif float(self.biglist[x][1]) < float(self.biglist[i][3]) < float(self.biglist[i - 2][1]) < float(
