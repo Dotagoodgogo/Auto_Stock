@@ -272,5 +272,3 @@ class stock:
 p = stock()
 p.processing()
 
-
-
