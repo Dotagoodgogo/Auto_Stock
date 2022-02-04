@@ -35,6 +35,7 @@ class stock:
         self.Stock_id = []
         maxpage = self.driver.find_element_by_css_selector(
             ".dataTables_wrapper div>.paginate_page>a:nth-last-child(1)").text
+        correct = ["6", "0", "3"]
         # 找出最大页数
         while True:
             i = 0
@@ -42,15 +43,11 @@ class stock:
                 try:
                     self.Stock_code = self.driver.find_elements_by_xpath(
                         "//*[@id='table_wrapper-table']/tbody/tr/td[2]/a")[i]
+                    if self.Stock_code.text[0] not in correct:
+                        i = i + 1
+                        continue
                     self.Stock_id.append(self.Stock_code.text)
-                except:
-                    continue
-                # new
-                try:
-                    if self.Stock_id[-1] in self.SavedCode:
-                        pass
-                    else:
-                        self.clickcode(self.Stock_code)
+                    self.clickcode(self.Stock_code)
                 except:
                     continue
 
@@ -119,8 +116,9 @@ class stock:
         # 在周K图寻找规律
         # pyautogui.moveTo(885,1030)
         # pyautogui.moveTo(1800,1030,2)
+        # for i in range(1015, 565, -3):
 
-        for i in range(1015, 565, -6):  # 鼠标移动
+        for i in range(1015, 565, -3):  # 鼠标移动(坐标，坐标，移动速度)
             pyautogui.moveTo(i, 505)
             inf = self.driver.find_elements_by_css_selector(
                 "#emchartk > div.__ui > div.__popfloatwin > h4 > span,#emchartk > div.__ui > div.__popfloatwin > div:nth-child(3) > span,#emchartk > div.__ui > div.__popfloatwin > div:nth-child(4) > span,#emchartk > div.__ui > div.__popfloatwin > div:nth-child(5) > span")
@@ -173,7 +171,7 @@ class stock:
                     continue
 
     def calculating2(self):
-        if self.Stock_id[-1] in self.CheckDouble:
+        if self.Stock_id[-1] in self.CheckDouble:  ##<--查看是否重复计算
             return
         x = self.biglist.index(self.FinalResult1[-1])  # 寻找起始点在是个数据里面的坐标
         for i in range(x + 1, len(self.biglist)):
@@ -189,21 +187,26 @@ class stock:
                             continue
                         else:
                             return
-
+                    # 判断强弱趋势  0<NC<PL<OC
                     if 0 < float(self.biglist[i - 2][1]) < float(self.biglist[i][3]) < float(
-                            self.biglist[i - 1][1]):  # 判断强弱趋势  0<NC<PL<OC
+                            self.biglist[i - 1][1]) and self.biglist[-1][1] < self.biglist[-2][1] and \
+                            float(self.biglist[-2][1]) - float(self.biglist[-1][1]) > float(
+                        self.biglist[-1][1]) - float(self.biglist[-1][3]):  # A-B>B-C
                         # 判断最大回调深度
                         depth = float(self.biglist[-1][1]) - float(self.biglist[-2][1]) + float(self.biglist[-1][3])
                         with open('stock.txt', 'a', encoding="utf-8") as f:
                             # f.write(self.Stock_id[-1] + " 趋势起点:" + str(self.FinalResult1[-1]) + " 转折点:" + str(
-                            # self.biglist[i - 1]) + 'A' + "转折点后第一根周线最低价:" + self.biglist[i][3])
-                            f.write(self.Stock_id[-1] + " 趋势起点:" + str(self.FinalResult1[-1]) + " 转折点最高价:" + str(
-                                self.biglist[i - 1][2]) + 'A' + "第十周最低价:" + self.biglist[i][3] + "回调深度: " + str(depth))
+                            # self.biglist[i - 1]) + 'A ' + "转折点后第一根周线最低价:" + self.biglist[i][3])
+                            f.write(self.Stock_id[-1] + " 趋势起点:" + str(self.FinalResult1[-1]) + " 第九周第十周最高价:" + str(
+                                max(self.biglist[-1][2], self.biglist[-2][2])
+                            ) + ' A ' + "第十周最低价:" + self.biglist[i][3] + "回调深度: " + str(depth) + "开仓价:" + str(
+                                depth * 1.02))
                             self.CheckDouble.append(self.Stock_id[-1])
                             f.write('\n')
 
                         return
                     """
+                    #强回调
                     elif float(self.biglist[x][1]) < float(self.biglist[i][3]) < float(self.biglist[i - 2][1]) < float(
                             self.biglist[i - 1][1]):  # BC<PL<NC<OC
                         # new
@@ -229,7 +232,7 @@ class stock:
                                 f.write('\n')
 
                             return
-                        """
+                    """
 
     def changepage(self, page):  # 调节起始页
         Entry = self.driver.find_element_by_css_selector("#main-table_paginate > input")
@@ -240,8 +243,6 @@ class stock:
         Go.click()
         time.sleep(1)
         pyautogui.scroll(400)
-
-
 
 
 p = stock()
