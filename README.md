@@ -23,7 +23,6 @@ Project review and thinking: The operation logic of the program itself is very s
 Date of change: 1/3/2022
 
 # 安装和注意指南
-1. 请下载chromedrive到C:\Program Files (x86)目录下-->注意chromedrive的版本需要和你用的google chrome版本一致。如何检查当前chrome版本请打开chrome然后点击右上角三点然后!
-
-[image](https://user-images.githubusercontent.com/87624521/183232676-26b51676-b1b8-409b-b088-698277d983a8.png)
+1. 请下载chromedrive到C:\Program Files (x86)目录下-->注意chromedrive的版本需要和你用的google chrome版本一致。如何检查当前chrome版本请打开chrome然后点击右上角三点然后
+![image](https://user-images.githubusercontent.com/87624521/183232676-26b51676-b1b8-409b-b088-698277d983a8.png)
 
