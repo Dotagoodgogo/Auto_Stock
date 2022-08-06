@@ -21,3 +21,6 @@ Project review and thinking: The operation logic of the program itself is very s
 3. It is easy to be crawled back. Once the web page elements are changed, a lot of problems will arise, such as a large number of positioning elements that need to be modified!
 
 Date of change: 1/3/2022
+
+# 安装和注意指南
+* 你好
