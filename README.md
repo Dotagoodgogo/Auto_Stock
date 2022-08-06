@@ -23,4 +23,4 @@ Project review and thinking: The operation logic of the program itself is very s
 Date of change: 1/3/2022
 
 # 安装和注意指南
-* 你好
+1. 你好
