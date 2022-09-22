@@ -23,28 +23,40 @@ Project review and thinking: The operation logic of the program itself is very s
 Date of change: 1/3/2022
 
 # 安装和注意指南（基于stock7）
+# Installation and attention guide (based on stock7)
 1. 请下载chromedrive到C:\Program Files (x86)目录下-->注意chromedrive的版本需要和你用的google chrome版本一致。如何检查当前chrome版本请打开chrome然后点击右上角三点然后点击help然后点击About Google Chrome。
+
+1.1. Please download chromedrive to C:\Program Files (x86) directory --> Note that the version of chromedrive needs to be the same as the version of google chrome you are using. How to check the current chrome version, please open chrome and click the three dots on the top right corner and then click help and then click About Google Chrome.
 
 
 2.代码部分请安装以下库，如果以下代码有下划红线线表明并没安装。
+2. Code section please install the following libraries, if the following code has underlined red line indicates that it is not installed.
 ![image](https://user-images.githubusercontent.com/87624521/183232870-56a2a119-befb-41ae-b182-8aa6dbb81d3d.png)
 
 pycharm用户直接鼠标移到红色部分，点击install package如下例图
+pycharm users directly mouse over the red part and click on install package as shown in the following example
 ![image](https://user-images.githubusercontent.com/87624521/183233082-d41fde85-76c9-4df7-a6f0-f4dfa44422c7.png)
 
 3.完成上述操作后主要修改地方为141-142行
+3. After completing the above operation, the main changes are made to lines 141-142
 
 ![image](https://user-images.githubusercontent.com/87624521/183233273-54f05517-dece-42da-86cf-f3aeda5fe010.png)
 
 首先需要搞懂这两行是什么意思
+First, you need to understand what these two lines mean
 
 1015 565是什么意思？他的意思是下图股票图标的最右边的x像素值和最左边的x像素值。
+What does 1015 565 mean? He means the rightmost x pixel value and the leftmost x pixel value of the stock icon below.
+
 
 ![image](https://user-images.githubusercontent.com/87624521/183233388-13e41689-4d86-4bcb-808d-f7c45c6c81ea.png)
 
 因为我们需要收集近十周的股票数据所以程序设计是从右往左自动滑动，当我们每次鼠标触发到某个周，网页的html元素会自动显示当周数据，这是我们这一个循环的工作原理。因为程序是通过像素值定位，每台电脑的像素值可能不同，所以如果需要更换电脑，程序中的一些像素值需要进行一些修改。正如我们现在所正在做的这一步。
 
+Because we need to collect stock data for the last ten weeks, the program is designed to automatically slide from right to left. When we trigger to a certain week each time, the html element of the web page will automatically display the data of that week, this is how we work in this cycle. Because the program is positioned by pixel values, each computer may have different pixel values, so if we need to change computers, some pixel values in the program need to be modified. As we are doing now in this step.
+
 4.如何获取股票图像的左右x值呢？我们需要以下代码
+4. How to get the left and right x-values of the stock image? We need the following code
 
 ![image](https://user-images.githubusercontent.com/87624521/183233751-8dd3c14a-2f2e-4c0c-b2f7-e4b7a311b23a.png)
 
