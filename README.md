@@ -26,26 +26,31 @@ Date of change: 1/3/2022
 # Installation and attention guide (based on stock7)
 1. 请下载chromedrive到C:\Program Files (x86)目录下-->注意chromedrive的版本需要和你用的google chrome版本一致。如何检查当前chrome版本请打开chrome然后点击右上角三点然后点击help然后点击About Google Chrome。
 
-1.1. Please download chromedrive to C:\Program Files (x86) directory --> Note that the version of chromedrive needs to be the same as the version of google chrome you are using. How to check the current chrome version, please open chrome and click the three dots on the top right corner and then click help and then click About Google Chrome.
+1. Please download chromedrive to C:\Program Files (x86) directory --> Note that the version of chromedrive needs to be the same as the version of google chrome you are using. How to check the current chrome version, please open chrome and click the three dots on the top right corner and then click help and then click About Google Chrome.
 
 
 2.代码部分请安装以下库，如果以下代码有下划红线线表明并没安装。
+
 2. Code section please install the following libraries, if the following code has underlined red line indicates that it is not installed.
 ![image](https://user-images.githubusercontent.com/87624521/183232870-56a2a119-befb-41ae-b182-8aa6dbb81d3d.png)
 
 pycharm用户直接鼠标移到红色部分，点击install package如下例图
+
 pycharm users directly mouse over the red part and click on install package as shown in the following example
 ![image](https://user-images.githubusercontent.com/87624521/183233082-d41fde85-76c9-4df7-a6f0-f4dfa44422c7.png)
 
 3.完成上述操作后主要修改地方为141-142行
+
 3. After completing the above operation, the main changes are made to lines 141-142
 
 ![image](https://user-images.githubusercontent.com/87624521/183233273-54f05517-dece-42da-86cf-f3aeda5fe010.png)
 
 首先需要搞懂这两行是什么意思
+
 First, you need to understand what these two lines mean
 
 1015 565是什么意思？他的意思是下图股票图标的最右边的x像素值和最左边的x像素值。
+
 What does 1015 565 mean? He means the rightmost x pixel value and the leftmost x pixel value of the stock icon below.
 
 
@@ -56,13 +61,18 @@ What does 1015 565 mean? He means the rightmost x pixel value and the leftmost x
 Because we need to collect stock data for the last ten weeks, the program is designed to automatically slide from right to left. When we trigger to a certain week each time, the html element of the web page will automatically display the data of that week, this is how we work in this cycle. Because the program is positioned by pixel values, each computer may have different pixel values, so if we need to change computers, some pixel values in the program need to be modified. As we are doing now in this step.
 
 4.如何获取股票图像的左右x值呢？我们需要以下代码
+
 4. How to get the left and right x-values of the stock image? We need the following code
 
 ![image](https://user-images.githubusercontent.com/87624521/183233751-8dd3c14a-2f2e-4c0c-b2f7-e4b7a311b23a.png)
 
 当然应该还有很多途径！我们首先导入库pyautogui和time然后写以下两行代码非常之简单。time.sleep(5)的意思为等待五秒。为什么要等待五秒，我之后再说。接下来是print(pyautogui.position())的意思为打印出当前鼠标x,y像素值。接下来我们启动程序打开网页下滑到图表，然后鼠标滑到图标右侧。五秒后程序会自动获取鼠标当前位置，这样我们就获得了图标最右侧的位置。当然，最左侧的方式是一样的。所以刚开始time.sleep(5)的意思是等待五秒，等你打开网页和鼠标就位的时间。如果觉得时间不够可以让等待时间更长通过更改time.sleep（）的值。
 
+Of course there should be many more ways! We first import the library pyautogui and time and then write the following two lines of code very simple. time.sleep(5) means wait for five seconds. Why wait for five seconds, I will say later. Next is print(pyautogui.position()) which means print out the current mouse x,y pixel value. Next we start the program to open the web page slide down to the chart, and then the mouse slide to the right of the icon. After five seconds the program will automatically get the current position of the mouse, so we get the rightmost position of the icon. Of course, the leftmost way is the same. So at first time.sleep(5) means wait five seconds for you to open the page and mouse in place. If you think it's not enough time you can make the wait longer by changing the value of time.sleep().
+
 回到141行 for loop 最后一个参数-6是鼠标一次的移动像素值，因为我们是从从右往左而不是从左往右，所以这里为-6而不是6。切记鼠标移动速度可等测试时候决定，鼠标移动像素太大可能会导致会漏读周线数据。
+
+Back to line 141 for loop, the last parameter -6 is the pixel value of mouse movement, because we are moving from right to left instead of left to right, so here is -6 instead of 6. Remember that the mouse movement speed can be decided when testing, too much mouse movement may cause the weekly data to be missed.
 
 5. 142 行pyautogui.moveTo(i, 505)在loop当中鼠标会一直在相同y值(这里是505)的情况横向移动，在测试中，请确保y值的范围一定要在图标的Y值区间。假如图标的Y值是从100->200。而用户y值设置为250. 这样会导致鼠标在图标之外移动从而触发不了每周周线数据。
 
