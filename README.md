@@ -76,7 +76,11 @@ Back to line 141 for loop, the last parameter -6 is the pixel value of mouse mov
 
 5. 142 行pyautogui.moveTo(i, 505)在loop当中鼠标会一直在相同y值(这里是505)的情况横向移动，在测试中，请确保y值的范围一定要在图标的Y值区间。假如图标的Y值是从100->200。而用户y值设置为250. 这样会导致鼠标在图标之外移动从而触发不了每周周线数据。
 
+5. 142 line pyautogui.moveTo(i, 505) In the loop, the mouse will always move horizontally with the same y value (505 in this case), in the test, please make sure that the y value range must be in the range of the icon's y value. If the y-value of the icon is from 100->200, and the y-value of the user is set to 250, this will cause the mouse to move outside the icon and thus not trigger the weekly data.
+
 6.一些debug的方法，本程序很多定位都是通过css和xml来定位的语法为以下两个案例，或可上网查找相关文档。假如一些代码定位出现问题可以在网页上检查
+
+6. some debug methods, this program is a lot of positioning through css and xml to position the syntax for the following two cases, or you can go online to find the relevant documents. If some code positioning problems can be checked on the web page
 
 ![image](https://user-images.githubusercontent.com/87624521/183234366-e83a8b2f-5076-4e18-91a8-b3876472b144.png)
 
@@ -85,30 +89,49 @@ Back to line 141 for loop, the last parameter -6 is the pixel value of mouse mov
 检查方法如下：
 可以copy上面的css或者xpath的定位参数例如：//*[@id='app']/div/div/div[9]/div[2]/div[1]/div[1]/div[3]/ul/li[2]/a
 
+Check the method as follows.
+You can copy the above css or xpath positioning parameters for example: //*[@id='app']/div/div/div[9]/div[2]/div[1]/div[1]/div[3]/ul/li[2]/a
+
 然后打开东方网站的一个股票页面右键点击Inspect
+
+Then open a stock page on the Eastern website and right click on Inspect
 ![image](https://user-images.githubusercontent.com/87624521/183234461-c476174b-709d-4cf8-ab36-ef82b387ba58.png)
 
 页面会这样
+
+The page will look like this
+
 ![image](https://user-images.githubusercontent.com/87624521/183234494-e8a3cea5-6d66-479f-a5bc-f9c356f757b2.png)
 
 ctrl+F打开命令行，如下图
 
+ctrl+F opens the command line, as follows
+
 ![image](https://user-images.githubusercontent.com/87624521/183234518-5a6cd51b-9d31-4cfb-9726-d1ade5a78763.png)
 
 复制刚才的定位参数
+
+Copy the positioning parameters from earlier
 
 ![image](https://user-images.githubusercontent.com/87624521/183234625-884d4de3-a789-4695-825c-29b559865a34.png)
 
 左侧蓝色框框表示当前参数的定位元素。以上方法来检查代码定位是否正确。同时如果想要获取相关元素的css或者xml值。我们可以点击左上角鼠标框
 图中以蓝色方式出现表明已经点击。
 
+The blue box on the left side indicates the positioning element of the current parameter. The above method to check if the code is positioned correctly. Also if you want to get the css or xml value of the related element. We can click on the mouse box in the upper left corner
+The figure appears in blue to indicate that it has been clicked.
+
 ![image](https://user-images.githubusercontent.com/87624521/183234668-7612e247-1d2c-408c-8046-62bce191a839.png)
 
 然后鼠标可以移动到网页任何位置。对应的网页元素参数会在右侧图中显示比如
 
+The mouse can then be moved to any position on the page. The corresponding web page element parameters are displayed in the right-hand diagram for example
+
 ![image](https://user-images.githubusercontent.com/87624521/183234737-97a1173e-de9f-43c7-af98-127a90f62014.png)
 
 我们可以在右侧html代码中右侧高亮区右键点击copy 我们比较常用css或者xpath，点击copy之后我们就获得了图中周线的css或者xpath参数。
+
+We can right-click copy in the right-hand side of the html code in the right-hand highlight area We are more commonly used css or xpath, click copy after we get the css or xpath parameters of the weekly line in the figure.
 
 ![image](https://user-images.githubusercontent.com/87624521/183234759-132f6df4-5cb0-4ae1-95ba-2e99e7c367fb.png)
 
